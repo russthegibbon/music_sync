@@ -1,8 +1,23 @@
 class Album
-  def initialize(artist_name:, title:)
-    @artist_name = artist_name
+  attr_reader :title, :favourite, :tracks
+
+  def initialize(title:, favourite:)
     @title = title
+    @favourite = favourite
+    @tracks = []
   end
 
-  attr_reader :artist_name, :title
+  def add_track(filename:, favourite:, essentials:)
+    @tracks.push(Track.new(filename: filename, favourite: favourite, essentials: essentials))
+  end
+
+  def is_favourite_track?(track_name)
+    track = @tracks.find { |track| track.filename == track_name }
+    track.favourite
+  end
+
+  def is_essentials_track?(track_name)
+    track = @tracks.find { |track| track.filename == track_name }
+    track.essentials
+  end
 end
