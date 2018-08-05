@@ -9,7 +9,7 @@ include Setup
 library = Library.get_latest
 @artists = library.nil? ? [] : library.artists
 
-new_artists = Dir["#{LIBRARY_PATH}*/"].sort_by(&:downcase)
+new_artists = Dir["#{LIBRARY_PATH}H*/"].sort_by(&:downcase)
 
 new_workbook = RubyXL::Workbook.new
 albums_worksheet = new_workbook.add_worksheet ALBUMS_WORKSHEET_NAME
@@ -35,7 +35,7 @@ new_artists.each_with_index do |artist_path|
     albums_worksheet.add_cell albums_row, 1, album_title
     if library.artist_known? artist_name
       artist = library.find_artist_by_name artist_name
-      albums_worksheet.add_cell(albums_row, ALBUM_FAVOURITE_COLUMN_INDEX, MARKER) if artist.is_favourite_album?(album_title)
+      albums_worksheet.add_cell(albums_row, ALBUM_FAVOURITE_COLUMN_INDEX, MARKER) if artist.has_album_named?(album_title) && artist.is_favourite_album?(album_title)
     end
     tracks = Dir["#{album_path}#{FILE_TYPES}"]
     tracks.each do |track_path|

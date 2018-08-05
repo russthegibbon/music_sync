@@ -5,7 +5,7 @@ require_relative 'library'
 
 include Setup
 
-sync_main = false
+sync_main = true
 sync_favourites = true
 sync_essentials = true
 
@@ -50,7 +50,10 @@ end
 
 library.artists.each do |artist|
   puts "==== Synching #{artist.name}"
-  Dir.chdir "#{TARGET_PATH}#{artist.name[0].upcase}/#{artist.name}"
+
+  artist_path = "#{TARGET_PATH}#{artist.name[0].upcase}/#{artist.name}"
+  Dir.mkdir artist_path if Dir[artist_path] == []
+  Dir.chdir artist_path
 
   # Delete anything that's not longer needed.
   existing_items = Dir['*']
@@ -73,7 +76,7 @@ library.artists.each do |artist|
     puts "-------- Synching #{album.title}"
     files_to_sync = []
     album.tracks.each do |track|
-      files_to_sync.push track.filename if (sync_main && album.favourites) ||
+      files_to_sync.push track.filename if (sync_main && album.favourite) ||
           (sync_favourites && track.favourite) ||
           (sync_essentials && track.essentials)
       if track.favourite
@@ -97,6 +100,7 @@ library.artists.each do |artist|
         FileUtils.cp(track_source, '.')
       end
     end
-    FileUtils.rm_r(target_directory, force: true) if Dir["#{target_directory}/*"] == []
+    FileUtils.rm_r(target_directory) if Dir["#{target_directory}/*"] == []
   end
+  FileUtils.rm_r(artist_path) if Dir["#{artist_path}/*"] == []
 end

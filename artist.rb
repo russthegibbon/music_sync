@@ -20,15 +20,23 @@ class Artist
   end
 
   def is_favourite_track?(album_title:, track_name:)
-    album = find_album_by_title(album_title)
-    track = album.tracks.find { |track| track.filename == track_name }
-    track.favourite
+    if has_album_named? album_title
+      album = find_album_by_title(album_title)
+      track = album.tracks.find { |track| track.filename == track_name }
+      track.favourite
+    else
+      false
+    end
   end
 
   def is_essentials_track?(album_title:, track_name:)
-    album = find_album_by_title(album_title)
-    track = album.tracks.find { |track| track.filename == track_name }
-    track.essentials
+    if has_album_named? album_title
+      album = find_album_by_title(album_title)
+      track = album.tracks.find { |track| track.filename == track_name }
+      track.essentials
+    else
+      false
+    end
   end
 
   def initial_dir
@@ -59,7 +67,9 @@ class Artist
 
   def find_album_by_title(title)
     matching_albums = @albums.find_all { |album| album.title == title }
-    case matching_albums.count
+    case
+      when matching_albums.nil?
+        raise "#{title} does not exist."
       when matching_albums.count == 0
         raise "#{title} does not exist."
       when matching_albums.count > 1
