@@ -23,7 +23,7 @@ class Artist
     if has_album_named? album_title
       album = find_album_by_title(album_title)
       track = album.tracks.find { |track| track.filename == track_name }
-      track.favourite
+      track && track.favourite
     else
       false
     end
@@ -33,7 +33,7 @@ class Artist
     if has_album_named? album_title
       album = find_album_by_title(album_title)
       track = album.tracks.find { |track| track.filename == track_name }
-      track.essentials
+      track && track.essentials
     else
       false
     end
