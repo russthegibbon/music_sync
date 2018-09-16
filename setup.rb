@@ -16,7 +16,6 @@ module Setup
     path.scan(/\/([^\/]+)\/?$/).flatten.first
   end
 
-  WORKING_DIR = Dir.pwd
   LIST_FILE_PREFIX = 'library'
   FILE_TYPES = "*.{mp3,wav,flac,alac,m4a,aac}"
   SOURCE_PATH = '/tmp/sync/'
