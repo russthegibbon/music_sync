@@ -1,14 +1,15 @@
 class Album
-  attr_reader :title, :favourite, :tracks
+  attr_reader :artist, :title, :favourite, :tracks
 
-  def initialize(title:, favourite:)
+  def initialize(artist:, title:, favourite:)
+    @artist = artist
     @title = title
     @favourite = favourite
     @tracks = []
   end
 
   def add_track(filename:, favourite:, essentials:)
-    @tracks.push(Track.new(filename: filename, favourite: favourite, essentials: essentials))
+    @tracks.push(Track.new(artist: @artist, album: self, filename: filename, favourite: favourite, essentials: essentials))
   end
 
   def is_favourite_track?(track_name)

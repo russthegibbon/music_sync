@@ -15,9 +15,10 @@ class Library
     process_tracks_sheet
   end
 
-  def self.get_latest
-    old_list_filenames = Dir["#{WORKING_DIR}/[^~]*.xlsx"]
-    return nil if old_list_filenames == []
+  def self.get_latest(path)
+    Dir.chdir path
+    old_list_filenames = Dir["[^~]*.xlsx"]
+    raise "No library files found at #{path}" if old_list_filenames == []
     previous_library_filename = old_list_filenames.sort.last
     Library.new previous_library_filename
   end
@@ -35,6 +36,18 @@ class Library
         raise "Multiple instances of #{name} defined."
     end
     matching_artists.first
+  end
+
+  def favourite_tracks
+    favourites = []
+    artists.each do |artist|
+      artist.albums.each do |album|
+        album.tracks.each do |track|
+          favourites.push(track) if track.favourite
+        end
+      end
+    end
+    favourites
   end
 
   private
@@ -70,7 +83,7 @@ class Library
       begin
         title = row[album_column_index].value
         favourite = !!(row[ALBUM_FAVOURITE_COLUMN_INDEX] && row[ALBUM_FAVOURITE_COLUMN_INDEX].value)
-        album = Album.new(title: title, favourite: favourite)
+        album = Album.new(artist: artist, title: title, favourite: favourite)
         artist.add_album album
         old_row = row.clone
         row_index += 1

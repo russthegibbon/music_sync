@@ -9,7 +9,7 @@ include Setup
 library = Library.get_latest
 @artists = library.nil? ? [] : library.artists
 
-new_artists = Dir["#{LIBRARY_PATH}Fleetwood*/"].sort_by(&:downcase)
+new_artists = Dir["#{SOURCE_PATH}*/"].sort_by(&:downcase)
 
 new_workbook = RubyXL::Workbook.new
 albums_worksheet = new_workbook.add_worksheet ALBUMS_WORKSHEET_NAME

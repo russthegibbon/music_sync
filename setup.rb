@@ -9,7 +9,7 @@ require_relative 'library'
 
 module Setup
   def self.connect_to_server
-    Open3.capture3 "mount -r -o nobrowse -t afp 'afp://sync:aYg-6kX-hon-bAQ@diskstation.local/music/Music' #{LIBRARY_PATH}"
+    Open3.capture3 "mount -r -o nobrowse -t afp 'afp://sync:aYg-6kX-hon-bAQ@diskstation.local/music/Music' #{SOURCE_PATH}"
   end
 
   def dir_name_from_path(path)
@@ -19,9 +19,9 @@ module Setup
   WORKING_DIR = Dir.pwd
   LIST_FILE_PREFIX = 'library'
   FILE_TYPES = "*.{mp3,wav,flac,alac,m4a,aac}"
-  LIBRARY_PATH = '/tmp/sync/'
+  SOURCE_PATH = '/tmp/sync/'
   LIST_FILENAME = "#{LIST_FILE_PREFIX}_#{Time.now.strftime('%Y%m%d_%H%M%S')}.xlsx"
-  Dir.mkdir LIBRARY_PATH if Dir[LIBRARY_PATH] == []
+  Dir.mkdir SOURCE_PATH if Dir[SOURCE_PATH] == []
 
   ALBUMS_WORKSHEET_NAME = 'albums'
   TRACKS_WORKSHEET_NAME = 'tracks'
