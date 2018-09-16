@@ -1,12 +1,15 @@
 #!/usr/local/bin/ruby -w
 
-# TODO: allow the previous list to be passed in as an argument.
+raise "Usage: list.rb path/to/directory/containing/library/spreadsheets" unless ARGV.size == 1
 
 require_relative 'setup'
 
 include Setup
 
-library = Library.get_latest
+library_path = ARGV[0]
+library_path = library_path + '/' unless library_path[-1] == '/'
+
+library = Library.get_latest library_path
 @artists = library.nil? ? [] : library.artists
 
 new_artists = Dir["#{SOURCE_PATH}*/"].sort_by(&:downcase)
@@ -58,4 +61,4 @@ new_artists.each_with_index do |artist_path|
   end
 end
 
-new_workbook.write "#{WORKING_DIR}/#{LIST_FILENAME}"
+new_workbook.write "#{library_path}/#{LIST_FILENAME}"
