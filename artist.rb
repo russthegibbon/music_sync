@@ -63,6 +63,12 @@ class Artist
     essentials_tracks != []
   end
 
+  def has_track?(album_title:, track_name:)
+    return false unless has_album_named? album_title
+
+    find_album_by_title(album_title).has_track_named? track_name
+  end
+
   private
 
   def find_album_by_title(title)

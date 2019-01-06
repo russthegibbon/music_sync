@@ -12,7 +12,7 @@ library_path = library_path + '/' unless library_path[-1] == '/'
 library = Library.get_latest library_path
 @artists = library.nil? ? [] : library.artists
 
-new_artists = Dir["#{SOURCE_PATH}*/"].sort_by(&:downcase)
+new_artists = Dir["#{SOURCE_PATH}*/*"].sort_by(&:downcase)
 
 new_workbook = RubyXL::Workbook.new
 albums_worksheet = new_workbook.add_worksheet ALBUMS_WORKSHEET_NAME
@@ -29,7 +29,7 @@ end
 songs_row = albums_row = 1
 
 new_artists.each_with_index do |artist_path|
-  albums = Dir["#{artist_path}*/"].sort_by(&:downcase)
+  albums = Dir["#{artist_path}/*/"].sort_by(&:downcase)
   albums.each do |album_path|
     artist_name = dir_name_from_path artist_path
     album_title = dir_name_from_path album_path
@@ -39,6 +39,9 @@ new_artists.each_with_index do |artist_path|
     if library && library.artist_known?(artist_name)
       artist = library.find_artist_by_name artist_name
       albums_worksheet.add_cell(albums_row, ALBUM_FAVOURITE_COLUMN_INDEX, MARKER) if artist.has_album_named?(album_title) && artist.is_favourite_album?(album_title)
+      albums_worksheet.add_cell(albums_row, ALBUM_NEW_COLUMN_INDEX, MARKER) unless artist.has_album_named? album_title
+    else
+      albums_worksheet.add_cell(albums_row, ALBUM_NEW_COLUMN_INDEX, MARKER)
     end
     tracks = Dir["#{album_path}#{FILE_TYPES}"]
     tracks.each do |track_path|
@@ -54,6 +57,9 @@ new_artists.each_with_index do |artist_path|
         if artist.is_essentials_track?(album_title: album_title, track_name: track_name)
           tracks_worksheet.add_cell(songs_row, TRACK_ESSENTIALS_COLUMN_INDEX, MARKER)
         end
+        tracks_worksheet.add_cell(songs_row, TRACK_NEW_COLUMN_INDEX, MARKER) unless artist.has_track?(album_title: album_title, track_name: track_name)
+      else
+        tracks_worksheet.add_cell(songs_row, TRACK_NEW_COLUMN_INDEX, MARKER)
       end
       songs_row += 1
     end
