@@ -1,36 +1,39 @@
 30 Seconds To Mars
-A-Ha
+A-ha
 ABBA
 Above & Beyond
-AC_DC
-Ace of Base
+#AC_DC
+#Ace of Base
 Adele
+Air
 Alanis Morissette
 Alex M.O.R.P.H. & Paul Van Dyk
-Alex Parks
+#Alex Parks
 Alexander O'Neal
 Alexandra Stan
-Alisha's Attic
-Alison Krauss
+#Alisha's Attic
+#Alison Krauss
 Amalia Rodrigues
+Amerie
 Amy Winehouse
+Anna Of The North
 Andrew Bayer
 Anggun
 Annie Lennox
 Ariana Grande
-Arcade Fire
+#Arcade Fire
 Armin van Buuren
 Arthur Conley
 Athlete
 Aurora
 B-Witched
-Bad Company
+#Bad Company
 Band of Horses
 Barenaked Ladies
 Bat For Lashes
 Bee Gees
 Belinda Carlisle
-Ben & Jason
+#Ben & Jason
 Ben Folds
 Betty Who
 Beyoncé
@@ -39,26 +42,32 @@ Billie Holiday
 Billy Joel
 Birdy
 Bjorn Akesson
+Black Legend
 Blackstreet
 Blondie
 Blur
+Bob Dylan
 Bob Marley and the Wailers
 Bob Seger & The Silver Bullet Band
 Bomb The Bass
 Bon Jovi
+Booker T. & The M.G.'s
 Brandon Flowers
 Bruce Hornsby & The Range
 Bruce Springsteen
 Bryan Ferry
 Buena Vista Social Club
-Calvin Harris
+#Calvin Harris
 Cara Dillon
-Carole King
+#Carole King
 Cass Fox
 Catatonia
+#Celine Dion
 Charli XCX
+Charlie Worsham
 Chase & Status
 Cher
+Chicago
 Chicane
 Choir of Young Believers
 Christina Aguilera
@@ -66,15 +75,18 @@ Christine and the Queens
 CHVRCHES
 Clean Bandit
 Cocovan
-Coldplay
+Cold Blue
+#Coldplay
+Cornershop
 Cosmic Gate
 Corinne Bailey Rae
-Creedence Clearwater Revival
+#Creedence Clearwater Revival
 Crowded House
 Crystal Bowersox
 D.Kay & Epsilon
 Dagny
 Daft Punk
+Daniel Bedingfield
 Daryl Hall & John Oates
 Daughter
 Dave Matthews Band
@@ -85,7 +97,8 @@ deadmau5
 Def Leppard
 Delta Goodrem
 Depeche Mode
-Dire Straits
+#Diana Ross And The Supremes
+#Dire Straits
 Divine Inspiration
 Don Henley
 Donna Lewis
@@ -118,14 +131,14 @@ Feeder
 Feist
 Fergie
 First Aid Kit
-Fleet Foxes
+#Fleet Foxes
 Fleetwood Mac
 Flight Of The Conchords
 Florence + the Machine
-Foo Fighters
+#Foo Fighters
 Fragma
 Frank Sinatra
-Fredericks, Goldman, Jones
+#Fredericks, Goldman, Jones
 Frenship
 Garbage
 Garth Brooks
@@ -139,13 +152,15 @@ Gotan Project
 Groove Armada
 Gun
 Gwen Stefani
-Gypsy & the Cat
+#Gypsy & the Cat
 Haim
 Headway
 Heather Nova
+Hepburn
 Honeyz
 Hot 8 Brass Band
-Hot Rats
+#Hot Rats
+I'm With Her
 I Blame Coco
 Icona Pop
 Iggy Azalea
@@ -159,9 +174,12 @@ James
 Janet Devlin
 Janis Joplin
 Jean-Michel Jarre
-Jeff Beck
+#Jeff Beck
+Jepp
 Jet
 Jewel
+Jessica
+Jessica Simpson
 Jessie J
 Jimi Hendrix
 John Cooper Clarke
@@ -169,9 +187,11 @@ John Moreland
 John 00 Fleming
 Joni Mitchell
 Josefin Öhrn + The Liberation
+Julia Biel
 Juliet Turner
 Junior Senior
 Justin Timberlake
+Karen Elson
 Kasabian
 Kate Bush
 Kate Rusby
@@ -188,42 +208,53 @@ Kitten
 Kool & The Gang
 KT Tunstall
 Kylie Minogue
+Labrinth
 Lady Gaga
 Ladyhawke
 Lana Del Rey
 Lapsley
 Laura Branigan
+Laura Marling
 Léa Ivanne
 Len
+#Let Loose
 Lily Allen
 Lindsay Mac
+Lisa Loeb
 Lissie
 Little Mix
-Lloyd Cole
+#Lloyd Cole
+LMC vs U2
 London Grammar
 Lorde
 Lost In The Fog
+Louise
+Love, Inc
 Luciana
 Lucie Silvas
+M2M
 M83
-Matuki
+Mandy Moore
+#Matuki
 M.I.A.
 Macy Gray
 Madeleine Peyroux
 Madonna
+Maggie Rogers
 Malcolm McLaren
 Manic Street Preachers
-Manu Chao
+#Manu Chao
 Marc Cohn
 Maria Nayler
 Mariah Carey
-Marina and The Diamonds
-Mark Ronson
+Marina And The Diamonds
+#Mark Ronson
 Martha Wainwright
-Martina McBride
+#Martina McBride
 Mary Chapin Carpenter
 Mat Zo
 matchbox twenty
+Matraca Berg
 Maximo Park
 Meat Loaf
 Megan Henwood
@@ -232,9 +263,15 @@ Meja
 Melody Gardot
 Meredith Brooks
 Michael Jackson
+Michelle Branch
+Mighty Dub Katz
 Mika
+Mint Royale
+Morales Watts
 Morcheeba
-Mott The Hoople
+Mott the Hoople
+#Mr. Big
+#Mr. Mister
 Muse
 My Baby
 Mylo
@@ -242,24 +279,31 @@ Naimee Coleman
 Natalie Imbruglia
 Nelly Furtado
 New Order
-Newton Faulkner
+#Newton Faulkner
 Nitin Sawhney
 Noa
 Noah And The Whale
 Norah Jones
+Ofra Haza
 Oh Land
 Orson
+#Otis Redding
+Pat Benatar
 Paul Carrack
 Paul McCartney
 Paul Simon
 Paula Abdul
-Pet Shop Boys
-Peter Gabriel
+#Pet Shop Boys
+#Peter Cox
+Peter Gabr¡iel
 Petite Meller
 Pharrell Williams
+Phoebe Bridgers
 Picture House
 Plumb
+Precious
 Prefab Sprout
+Pretenders
 Prince
 Professor Elemental
 Public Service Broadcasting
@@ -267,17 +311,19 @@ Pulp
 Pumarosa
 Queen
 R.E.M.
-R¢is¡n Murphy
+Roisin Murphy
 Radiohead
+#Randa
 Razorlight
 Roachford
 Rob Thomas
 Robbie Williams
 Robyn
 Roisin Murphy
+#Ronan Keating
 Roxette
-Roy Ayers
-Royksopp
+#Roy Ayers
+#Royksopp
 Royworld
 Rufus Wainwright
 Rumer
@@ -285,21 +331,23 @@ Ryan Adams
 Samim
 Santigold
 Sara Bareilles
-Sara Taveres
+Sara Tavares
 Sarah Jarosz
 Scarlet
 School Of Seven Bells
 Scissor Sisters
 Shakespear's Sister
 Shakira
-Sharon Shannon
+#Sharon Shannon
 Shawn Colvin
+Shawn Mullins
 Sheryl Crow
 Show of Hands
 Sia
 Sigala
 Simple Minds
 Siobhan Donaghy
+Sixpence None The Richer
 Sleeper
 Smoke City
 Smoke Fairies
@@ -309,38 +357,44 @@ Sophie Ellis-Bextor
 Squeeze
 Squirrel Nut Zippers
 Steely Dan
-Steps
+#Steps
+Stereophonics
 Steve Winwood
+Stevie Nicks
 Sting
 Sugababes
 Sugar
 Sugarland
 Supertramp
 Super8 & Tab
+Superorganism
 Suzanne Vega
 T'Pau
-Take That
+#Take That
 Talking Heads
 Tanita Tikaram
 Taylor Swift
+Tegan And Sara
 The Alan Parsons Project
+#The Artful Dodger
 The Bangles
 The Beatles
-The Carpenters
+#The Carpenters
 The Clash
 The Cooper Temple Clause
 The Corrs
 The Cure
 The Darkness
-The Divine Comedy
+#The Divine Comedy
 The Eagles
 The Feeling
-The Go! Team
+#The Go! Team
 The Gossip
 The Hold Steady
-The Hot Rats
+#The Hot Rats
 The Imagined Village
 The Isley Brothers
+The Jam
 The Killers
 The Kinks
 The Mamas & the Papas
@@ -350,14 +404,15 @@ The Pretty Reckless
 The Rolling Stones
 The Script
 The Seekers
-The Strokes
+#The Strokes
 The Vaccines
+The Verve
 The White Stripes
 The Who
 Then Jerico
 Thievery Corporation
 Thomas Dolby
-Thorns
+#Thorns
 Tina Arena
 Tina Turner
 Tom Petty
@@ -372,17 +427,19 @@ Turin Brakes
 Two Door Cinema Club
 U2
 Ulrich Schnauss
-Various
-Voice of the Beehive
+#Various
+#Victoria Beckham
+Voice Of The Beehive
 VV Brown
 Ward Thomas
 Warren Zevon
+Wes
 Wham!
 Wheat
 Whitney Houston
 Will Young
 Wye Oak
 X&Y
-Yazoo
+#Yazoo
 Zlata Ognevich
 ZZ Top

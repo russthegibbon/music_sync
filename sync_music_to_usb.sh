@@ -391,7 +391,7 @@ declare -a artists=(
 "ZZ Top"
 )
 
-start_path="/Volumes/SAMPFORD/MUSIC"
+start_path="/Volumes/Kiruna"
 for artist in "${artists[@]}"
 do
 	initial=${artist:0:1}

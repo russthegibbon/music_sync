@@ -1,91 +1,171 @@
-#!/usr/local/bin/ruby -w
+require 'optparse'
 
-require 'fileutils'
-require 'open3'
+require_relative 'setup'
+require_relative 'library'
 
-warnings = []
-
-# Read artist list.
-artists_path = './artists.txt'
-artists = []
-File.open artists_path do |file|
-  while line = file.gets
-    artists.push line.chomp
+options = {}
+OptionParser.new do |parser|
+  parser.banner = "Usage: sync.rb [options]."
+  parser.on('-S', '--start [ARG]', "Start syncing from specified artist.") do |start_artist_arg|
+    options[:start] = start_artist_arg
   end
-end
-
-mp3_library_dir = '/Volumes/music/Music/'
-flac_library_dir = '/Volumes/music/Flac/'
-target_dir = '/Volumes/Hooferies/'
-
-# Never touch anything outside the initial directories.
-# Create initial directories on target, unless they already exist.
-initials = artists.map { |a| a[0].upcase }.uniq.sort
-initials.each do |initial|
-  initial_dir = target_dir + initial
-  if File.exist? initial_dir
-    raise "#{initial_dir} exists but is not a directory." unless File.directory? initial_dir
-  else
-    Dir.mkdir initial_dir
+  parser.on('-E', '--end [ARG]', "End syncing after specified artist.") do |end_artist_arg|
+    options[:end] = end_artist_arg
   end
-  # Delete any artists that have been removed from the artist list.
-  artists_with_this_initial = artists.select { |a| a[0].upcase == initial }
-  Dir.chdir initial_dir
-  existing_artist_dirs = Dir['*/']
-  existing_artist_dirs.each do |d|
-    FileUtils.rm_r(d, force: true) unless artists_with_this_initial.include? d.chomp '/'
+  parser.on('-A', '--artist [ARG]', "Sync only the specified artist.") do |single_artist_arg|
+    options[:artist] = single_artist_arg
   end
-end
+  parser.on('-t', '--target TARGET', "Sync to the specified path.") do |target_arg|
+    target_arg = target_arg + '/' unless target_arg[-1] == '/'
+    options[:target] = target_arg
+  end
+  parser.on('-l', '--library LIBRARY', "The directory containing the library file.") do |library_arg|
+    library_arg = library_arg + '/' unless library_arg[-1] == '/'
+    options[:library] = library_arg
+  end
+  parser.on('-a', '--albums', "Sync marked albums.") do |sync_albums_arg|
+    options[:albums] = sync_albums_arg
+  end
+  parser.on('-f', '--favourites', "Sync favourite tracks.") do |sync_favourites_arg|
+    options[:favourites] = sync_favourites_arg
+  end
+  parser.on('-e', '--essentials', "Sync essentials collections.") do |sync_essentials_arg|
+    options[:essentials] = sync_essentials_arg
+  end
+  parser.on('-h', '--help', 'Display this help.') do
+    puts parser
+    exit
+  end
+end.parse!
 
-artists.each do |artist|
-  # Make an artist directory on the target, unless it already exists.
-  initial = artist[0].upcase
-  Dir.chdir target_dir + initial
-  if File.exist? artist
-    raise "#{artist} exists but is not a directory." unless File.directory? artist
-  else
-    Dir.mkdir artist
+include Setup
+
+sync_albums = !!options[:albums]
+sync_favourites = !!options[:favourites]
+sync_essentials = !!options[:essentials]
+
+raise 'Nothing to sync: albums, favourites or essentials must be specified.' unless sync_favourites || sync_essentials || sync_albums
+
+TARGET_PATH = options[:target] || raise('Target path must be specified.')
+LIBRARY_PATH = options[:library] || raise('Library path must be specified')
+library = Library.get_latest(LIBRARY_PATH)
+
+Dir.chdir TARGET_PATH
+
+def create_initial_directories(library)
+  artists = library.artists
+  artist_names = artists.map(&:name)
+  initials = artist_names.map { |a| a[0].upcase }.uniq.sort
+  # Delete anything that doesn't correspond to a valid initial.
+  Dir['*'].each do |item|
+    FileUtils.rm_r(item, force: true) unless initials.include? item
   end
 
-  # Sync flac albums first.
-  flac_source_dir = flac_library_dir + artist
-  if Dir.exist? flac_source_dir
-    Dir.chdir flac_source_dir
-    flac_albums = Dir['*/'] || []
-    flac_albums.each do |album|
-      cmd = "cd \"#{flac_source_dir}\" && rsync -r --progress --delete --delete-excluded --exclude '*.ini' --exclude '*.wma' --exclude '*.db' \"./#{album}\" \"#{target_dir}#{initial}/#{artist}/#{album}\""
-      sync_result = Open3.capture3 cmd
-      warnings.push sync_result[1] unless sync_result[1] == ''
-      puts sync_result.first
+  initials.each do |initial|
+    initial_dir = TARGET_PATH + initial
+    if File.exist? initial_dir
+      raise "#{initial_dir} exists but is not a directory." unless File.directory? initial_dir
+    else
+      Dir.mkdir initial_dir
     end
-  else
-    flac_albums = []
-  end
-
-  # Sync mp3 albums where flac version is not available.
-  mp3_source_dir = mp3_library_dir + artist
-  if Dir.exist? mp3_source_dir
-    Dir.chdir mp3_source_dir
-    mp3_albums = Dir['*/'] - flac_albums
-    mp3_albums.each do |album|
-      cmd = "cd \"#{mp3_source_dir}\" && rsync -r --progress --delete --delete-excluded --exclude '*.ini' --exclude '*.wma' --exclude '*.db' \"./#{album}\" \"#{target_dir}#{initial}/#{artist}/#{album}\""
-      sync_result = Open3.capture3 cmd
-      warnings.push sync_result[1] unless sync_result[1] == ''
-      puts sync_result.first
+    # Delete any artists that have been removed from the artist list.
+    artists_with_this_initial = artist_names.select { |a| a[0].upcase == initial }
+    Dir.chdir initial_dir
+    existing_artist_dirs = Dir['*']
+    existing_artist_dirs.each do |d|
+      FileUtils.rm_r(d, force: true) unless artists_with_this_initial.include? d.chomp '/'
     end
-  end
-
-  # Note a warning if we didn't end up with any files on the target for the artist.
-  Dir.chdir target_dir + initial + '/' + artist
-  files_on_target = Dir.glob('**/*').reject { |f| File.directory? f }
-  if files_on_target == []
-    warnings.push "No music for #{artist}."
-    Dir.chdir target_dir + initial
-    FileUtils.rm_r artist
   end
 end
 
-unless warnings == []
-puts "/n== Problems occurred =============================/n"
-puts warnings
+create_initial_directories library
+
+if options[:artist]
+  artists_to_sync = [library.find_artist_by_name(options[:artist])]
+else
+  artists_to_sync = library.artists
+  if options[:start]
+    start_artist = options[:start]
+    raise "Start artist #{start_artist} does not exist in the library" unless library.artist_known? start_artist
+    library.artists.keep_if { |artist| artist.name.downcase >= start_artist.downcase }
+  end
+  if options[:end]
+    end_artist = options[:end]
+    raise "End artist #{end_artist} does not exist in the library" unless library.artist_known? end_artist
+    library.artists.keep_if { |artist| artist.name.downcase <= end_artist.downcase }
+  end
+
+end
+
+artists_to_sync.each do |artist|
+  puts "\nSyncing #{artist.name}"
+
+  artist_path = "#{TARGET_PATH}#{artist.name[0].upcase}/#{artist.name}"
+  Dir.mkdir artist_path if Dir[artist_path] == []
+  Dir.chdir artist_path
+
+  # Delete anything that's not longer needed.
+  existing_items = Dir['*']
+  existing_items.each do |item|
+    FileUtils.rm_r(item, force: true) unless artist.has_album_named? item
+  end
+
+  # Create essentials playlist if it's wanted.
+  if sync_essentials && artist.has_essentials_tracks?
+    playlist_filename = "The Essential #{artist.name}.m3u"
+    FileUtils.rm(playlist_filename) unless Dir[playlist_filename] == []
+    File.open(playlist_filename, 'a') do |file|
+      artist.essentials_tracks.each do |track|
+        file.puts track
+      end
+    end
+  end
+
+  artist.albums.each do |album|
+    puts "---- #{album.title}"
+    files_to_sync = []
+    album.tracks.each do |track|
+      files_to_sync.push track.filename if (sync_albums && album.favourite) ||
+          (sync_favourites && track.favourite) ||
+          (sync_essentials && track.essentials)
+    end
+    source_directory = "#{SOURCE_PATH}#{artist.name}/#{album.title}/"
+    target_directory = "#{TARGET_PATH}#{artist.name[0].upcase}/#{artist.name}/#{album.title}"
+    Dir.mkdir target_directory if Dir[target_directory] == []
+    Dir.chdir target_directory
+    # Remove any existing files we don't want.
+    existing_files = Dir['*']
+    existing_files.each do |file|
+      FileUtils.rm(file) unless files_to_sync.include?(file)
+    end
+    # Copy over the files we want.
+    files_to_sync.each do |file_to_sync|
+      track_source = "#{source_directory}#{file_to_sync}"
+      unless Dir[file_to_sync] != [] && FileUtils.identical?(track_source, file_to_sync)
+        puts "Copying #{track_source} to #{Dir.pwd}"
+        FileUtils.cp(track_source, '.')
+      end
+    end
+    if Dir["#{target_directory}/*"] == []
+      # Remove the album directory if there's nothing in it.
+      FileUtils.rm_r(target_directory)
+    else
+      # Copy any jpg image files over.
+      Dir["#{source_directory}/*.jpg"].each do |image|
+        FileUtils.cp image, target_directory
+      end
+    end
+  end
+  FileUtils.rm_r(artist_path) if Dir["#{artist_path}/*"] == []
+end
+
+# Create favourites playlist if it's wanted.
+favourites_playlist = "#{TARGET_PATH}Radio Russ.m3u"
+if sync_favourites
+  FileUtils.rm(favourites_playlist) unless Dir[favourites_playlist] == []
+  File.open(favourites_playlist, 'a') do |file|
+    library.favourite_tracks.each do |track|
+      file.puts "#{track.artist.initial_dir}#{track.artist.name}/#{track.album.title}/#{track.filename}"
+    end
+  end
 end
