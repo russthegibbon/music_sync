@@ -21,4 +21,8 @@ class Album
     track = @tracks.find { |track| track.filename == track_name }
     track.essentials
   end
+
+  def has_track_named?(track_name)
+    @tracks.any? {|track| track.filename == track_name}
+  end
 end

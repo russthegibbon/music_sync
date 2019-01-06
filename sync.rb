@@ -129,7 +129,7 @@ artists_to_sync.each do |artist|
           (sync_favourites && track.favourite) ||
           (sync_essentials && track.essentials)
     end
-    source_directory = "#{SOURCE_PATH}#{artist.name}/#{album.title}/"
+    source_directory = "#{SOURCE_PATH}#{artist.name[0].upcase}/#{artist.name}/#{album.title}/"
     target_directory = "#{TARGET_PATH}#{artist.name[0].upcase}/#{artist.name}/#{album.title}"
     Dir.mkdir target_directory if Dir[target_directory] == []
     Dir.chdir target_directory
