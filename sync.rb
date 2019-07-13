@@ -32,6 +32,12 @@ OptionParser.new do |parser|
   parser.on('-e', '--essentials', "Sync essentials collections.") do |sync_essentials_arg|
     options[:essentials] = sync_essentials_arg
   end
+  parser.on('-n', '--new', "Sync new tracks.") do |sync_new_arg|
+    options[:new] = sync_new_arg
+  end
+  parser.on('-u', '--user', "User name (used to name 'Radio <name>' playlist).") do |sync_user_arg|
+    options[:user_name] = sync_user_arg
+  end
   parser.on('-h', '--help', 'Display this help.') do
     puts parser
     exit
@@ -43,6 +49,7 @@ include Setup
 sync_albums = !!options[:albums]
 sync_favourites = !!options[:favourites]
 sync_essentials = !!options[:essentials]
+sync_new = !!options[:new]
 
 raise 'Nothing to sync: albums, favourites or essentials must be specified.' unless sync_favourites || sync_essentials || sync_albums
 
@@ -94,7 +101,6 @@ else
     raise "End artist #{end_artist} does not exist in the library" unless library.artist_known? end_artist
     library.artists.keep_if { |artist| artist.name.downcase <= end_artist.downcase }
   end
-
 end
 
 artists_to_sync.each do |artist|
@@ -160,12 +166,26 @@ artists_to_sync.each do |artist|
 end
 
 # Create favourites playlist if it's wanted.
-favourites_playlist = "#{TARGET_PATH}Radio Russ.m3u"
 if sync_favourites
+  user_name = options[:user_name]
+  favourites_playlist_name = user_name ? "Radio_#{user_name}" : 'Favourites'
+  favourites_playlist = "#{TARGET_PATH}#{favourites_playlist_name}.m3u"
   FileUtils.rm(favourites_playlist) unless Dir[favourites_playlist] == []
   File.open(favourites_playlist, 'a') do |file|
     library.favourite_tracks.each do |track|
       file.puts "#{track.artist.initial_dir}#{track.artist.name}/#{track.album.title}/#{track.filename}"
     end
   end
+end
+
+# Create new playlist if it's wanted.
+if sync_new
+  # added_dates =
+  # new_playlist = "#{TARGET_PATH}new_tracks.m3u"
+  # FileUtils.rm(new_playlist) unless Dir[new_playlist] == []
+  # File.open(new_playlist, 'a') do |file|
+  #   library.new_tracks.each do |track|
+  #     file.puts "#{track.artist.initial_dir}#{track.artist.name}/#{track.album.title}/#{track.filename}"
+  #   end
+  # end
 end

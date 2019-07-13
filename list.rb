@@ -38,10 +38,14 @@ new_artists.each_with_index do |artist_path|
     albums_worksheet.add_cell albums_row, 1, album_title
     if library && library.artist_known?(artist_name)
       artist = library.find_artist_by_name artist_name
-      albums_worksheet.add_cell(albums_row, ALBUM_FAVOURITE_COLUMN_INDEX, MARKER) if artist.has_album_named?(album_title) && artist.is_favourite_album?(album_title)
-      albums_worksheet.add_cell(albums_row, ALBUM_NEW_COLUMN_INDEX, MARKER) unless artist.has_album_named? album_title
+      if artist.has_album_named? album_title
+        albums_worksheet.add_cell(albums_row, ALBUM_FAVOURITE_COLUMN_INDEX, MARKER) if artist.is_favourite_album?(album_title)
+        albums_worksheet.add_cell(albums_row, ALBUM_DATE_ADDED_COLUMN_INDEX, artist.find_album_by_title(album_title).date_added_string)
+      else
+        albums_worksheet.add_cell(albums_row, ALBUM_DATE_ADDED_COLUMN_INDEX, Date.today.strftime('%Y%m%d'))
+      end
     else
-      albums_worksheet.add_cell(albums_row, ALBUM_NEW_COLUMN_INDEX, MARKER)
+      albums_worksheet.add_cell(albums_row, ALBUM_DATE_ADDED_COLUMN_INDEX, Date.today.strftime('%Y%m%d'))
     end
     tracks = Dir["#{album_path}#{FILE_TYPES}"]
     tracks.each do |track_path|
@@ -57,9 +61,13 @@ new_artists.each_with_index do |artist_path|
         if artist.is_essentials_track?(album_title: album_title, track_name: track_name)
           tracks_worksheet.add_cell(songs_row, TRACK_ESSENTIALS_COLUMN_INDEX, MARKER)
         end
-        tracks_worksheet.add_cell(songs_row, TRACK_NEW_COLUMN_INDEX, MARKER) unless artist.has_track?(album_title: album_title, track_name: track_name)
+        if artist.has_track?(album_title: album_title, track_name: track_name)
+          tracks_worksheet.add_cell(songs_row, TRACK_DATE_ADDED_COLUMN_INDEX, artist.find_track(album_title: album_title, track_name: track_name).date_added_string)
+        else
+          tracks_worksheet.add_cell(songs_row, TRACK_DATE_ADDED_COLUMN_INDEX, Date.today.strftime('%Y%m%d'))
+        end
       else
-        tracks_worksheet.add_cell(songs_row, TRACK_NEW_COLUMN_INDEX, MARKER)
+        tracks_worksheet.add_cell(songs_row, TRACK_DATE_ADDED_COLUMN_INDEX, Date.today.strftime('%Y%m%d'))
       end
       songs_row += 1
     end

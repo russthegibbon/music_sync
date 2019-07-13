@@ -82,8 +82,9 @@ class Library
       artist = Artist.new(name: artist_name)
       begin
         title = row[album_column_index].value
+        date_added = row[ALBUM_DATE_ADDED_COLUMN_INDEX].value
         favourite = !!(row[ALBUM_FAVOURITE_COLUMN_INDEX] && row[ALBUM_FAVOURITE_COLUMN_INDEX].value)
-        album = Album.new(artist: artist, title: title, favourite: favourite)
+        album = Album.new(artist: artist, title: title, favourite: favourite, date_added: date_added)
         artist.add_album album
         old_row = row.clone
         row_index += 1
@@ -105,9 +106,10 @@ class Library
       begin
         album_title = row[album_title_column_index].value
         track_name = row[track_name_column_index].value
+        date_added = row[TRACK_DATE_ADDED_COLUMN_INDEX].value
         favourite = !!(row[TRACK_FAVOURITE_COLUMN_INDEX] && row[TRACK_FAVOURITE_COLUMN_INDEX].value)
         essentials = !!(row[TRACK_ESSENTIALS_COLUMN_INDEX] && row[TRACK_ESSENTIALS_COLUMN_INDEX].value)
-        artist.add_track(album_title: album_title, track_name: track_name, favourite: favourite, essentials: essentials)
+        artist.add_track(album_title: album_title, track_name: track_name, favourite: favourite, essentials: essentials, date_added: date_added)
         row_index += 1
         old_row = row.clone
         row = @tracks_worksheet[row_index]

@@ -10,9 +10,9 @@ class Artist
     @albums.push(album)
   end
 
-  def add_track(album_title:, track_name:, favourite:, essentials:)
+  def add_track(album_title:, track_name:, favourite:, essentials:, date_added:)
     album = find_album_by_title album_title
-    album.add_track(filename: track_name, favourite: favourite, essentials: essentials)
+    album.add_track(filename: track_name, favourite: favourite, essentials: essentials, date_added: date_added)
   end
 
   def is_favourite_album?(album_title)
@@ -44,6 +44,7 @@ class Artist
   end
 
   def has_album_named?(title)
+    # TODO: use `any`
     !!albums.find { |album| album.title == title }
   end
 
@@ -69,8 +70,6 @@ class Artist
     find_album_by_title(album_title).has_track_named? track_name
   end
 
-  private
-
   def find_album_by_title(title)
     matching_albums = @albums.find_all { |album| album.title == title }
     case
@@ -82,5 +81,9 @@ class Artist
         raise "Multiple instances of #{title} defined."
     end
     matching_albums.first
+  end
+
+  def find_track(album_title:, track_name:)
+    find_album_by_title(album_title).find_track_by_name(track_name)
   end
 end
