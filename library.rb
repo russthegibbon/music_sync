@@ -18,6 +18,8 @@ class Library
   def self.get_latest(path)
     Dir.chdir path
     old_list_filenames = Dir["[^~]*.xlsx"]
+    # TODO: the next line implies that a template has to be manually created when starting from nothing.  Add a command
+    # line option to create it automatically.
     raise "No library files found at #{path}" if old_list_filenames == []
     previous_library_filename = old_list_filenames.sort.last
     Library.new previous_library_filename
@@ -76,7 +78,7 @@ class Library
     @artists = []
     row_index = START_ROW
     row = @albums_worksheet[row_index]
-    begin
+    while row_index <= MAX_ROWS && row && row.cells != []
       artist_name = row[artist_column_index].value
       raise "Duplicate artist in albums spreadsheet: #{artist_name}" if artist_known?(artist_name)
       artist = Artist.new(name: artist_name)
@@ -88,9 +90,9 @@ class Library
         old_row = row.clone
         row_index += 1
         row = @albums_worksheet[row_index]
-      end while row_index <= MAX_ROWS && row && row[artist_column_index].value == old_row[artist_column_index].value
+      end while row_index <= MAX_ROWS && row && row.cells != [] && row[artist_column_index].value == old_row[artist_column_index].value
       @artists.push(artist)
-    end while row_index <= MAX_ROWS && row
+    end
   end
 
   def process_tracks_sheet
@@ -99,7 +101,7 @@ class Library
     track_name_column_index = TRACK_COLUMN_HEADERS.find_index 'track'
     row_index = START_ROW
     row = @tracks_worksheet[row_index]
-    begin
+    while row_index < MAX_ROWS && row
       artist_name = row[artist_name_column_index].value
       artist = find_artist_by_name artist_name
       begin
@@ -112,6 +114,6 @@ class Library
         old_row = row.clone
         row = @tracks_worksheet[row_index]
       end while row_index < MAX_ROWS && row && row[artist_name_column_index].value == old_row[artist_name_column_index].value
-    end while row_index < MAX_ROWS && row
+    end
   end
 end

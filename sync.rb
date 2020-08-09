@@ -141,6 +141,10 @@ artists_to_sync.each do |artist|
     # Copy over the files we want.
     files_to_sync.each do |file_to_sync|
       track_source = "#{source_directory}#{file_to_sync}"
+      if Dir[file_to_sync].empty?
+        puts "Cannot sync #{file_to_sync} because it does not exist."
+        next
+      end
       unless Dir[file_to_sync] != [] && FileUtils.identical?(track_source, file_to_sync)
         puts "Copying #{track_source} to #{Dir.pwd}"
         FileUtils.cp(track_source, '.')
@@ -148,7 +152,7 @@ artists_to_sync.each do |artist|
     end
     if Dir["#{target_directory}/*"] == []
       # Remove the album directory if there's nothing in it.
-      FileUtils.rm_r(target_directory)
+      FileUtils.rm_r(target_directory, force: true)
     else
       # Copy any jpg image files over.
       Dir["#{source_directory}/*.jpg"].each do |image|
