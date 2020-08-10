@@ -131,7 +131,7 @@ artists_to_sync.each do |artist|
     end
     source_directory = "#{SOURCE_PATH}#{artist.name[0].upcase}/#{artist.name}/#{album.title}/"
     target_directory = "#{TARGET_PATH}#{artist.name[0].upcase}/#{artist.name}/#{album.title}"
-    Dir.mkdir target_directory if Dir[target_directory] == []
+    Dir.mkdir target_directory unless Dir.exist? target_directory
     Dir.chdir target_directory
     # Remove any existing files we don't want.
     existing_files = Dir['*']
@@ -141,11 +141,11 @@ artists_to_sync.each do |artist|
     # Copy over the files we want.
     files_to_sync.each do |file_to_sync|
       track_source = "#{source_directory}#{file_to_sync}"
-      if Dir[file_to_sync].empty?
-        puts "Cannot sync #{file_to_sync} because it does not exist."
+      unless File.exist? track_source
+        puts "Cannot sync #{track_source} because it does not exist."
         next
       end
-      unless Dir[file_to_sync] != [] && FileUtils.identical?(track_source, file_to_sync)
+      unless File.exist?(file_to_sync) && FileUtils.identical?(track_source, file_to_sync)
         puts "Copying #{track_source} to #{Dir.pwd}"
         FileUtils.cp(track_source, '.')
       end
