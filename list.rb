@@ -57,6 +57,9 @@ new_artists.each_with_index do |artist_path|
         if artist.is_essentials_track?(album_title: album_title, track_name: track_name)
           tracks_worksheet.add_cell(songs_row, TRACK_ESSENTIALS_COLUMN_INDEX, MARKER)
         end
+        if artist.is_hotlist_track?(album_title: album_title, track_name: track_name)
+          tracks_worksheet.add_cell(songs_row, TRACK_HOTLIST_COLUMN_INDEX, MARKER)
+        end
         tracks_worksheet.add_cell(songs_row, TRACK_NEW_COLUMN_INDEX, MARKER) unless artist.has_track?(album_title: album_title, track_name: track_name)
       else
         tracks_worksheet.add_cell(songs_row, TRACK_NEW_COLUMN_INDEX, MARKER)
