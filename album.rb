@@ -8,8 +8,8 @@ class Album
     @tracks = []
   end
 
-  def add_track(filename:, favourite:, essentials:)
-    @tracks.push(Track.new(artist: @artist, album: self, filename: filename, favourite: favourite, essentials: essentials))
+  def add_track(filename:, favourite:, essentials:, hotlist:)
+    @tracks.push(Track.new(artist: @artist, album: self, filename: filename, favourite: favourite, essentials: essentials, hotlist: hotlist))
   end
 
   def is_favourite_track?(track_name)

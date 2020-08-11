@@ -10,9 +10,9 @@ class Artist
     @albums.push(album)
   end
 
-  def add_track(album_title:, track_name:, favourite:, essentials:)
+  def add_track(album_title:, track_name:, favourite:, essentials:, hotlist:)
     album = find_album_by_title album_title
-    album.add_track(filename: track_name, favourite: favourite, essentials: essentials)
+    album.add_track(filename: track_name, favourite: favourite, essentials: essentials, hotlist: hotlist)
   end
 
   def is_favourite_album?(album_title)
@@ -34,6 +34,16 @@ class Artist
       album = find_album_by_title(album_title)
       track = album.tracks.find { |track| track.filename == track_name }
       track && track.essentials
+    else
+      false
+    end
+  end
+
+  def is_hotlist_track?(album_title:, track_name:)
+    if has_album_named? album_title
+      album = find_album_by_title(album_title)
+      track = album.tracks.find { |track| track.filename == track_name }
+      track && track.hotlist
     else
       false
     end

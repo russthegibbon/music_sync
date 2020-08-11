@@ -52,6 +52,18 @@ class Library
     favourites
   end
 
+  def hotlist_tracks
+    hotlist = []
+    artists.each do |artist|
+      artist.albums.each do |album|
+        album.tracks.each do |track|
+          hotlist.push(track) if track.hotlist
+        end
+      end
+    end
+    hotlist
+  end
+
   private
 
   def check_column_headers
@@ -109,7 +121,8 @@ class Library
         track_name = row[track_name_column_index].value
         favourite = !!(row[TRACK_FAVOURITE_COLUMN_INDEX] && row[TRACK_FAVOURITE_COLUMN_INDEX].value)
         essentials = !!(row[TRACK_ESSENTIALS_COLUMN_INDEX] && row[TRACK_ESSENTIALS_COLUMN_INDEX].value)
-        artist.add_track(album_title: album_title, track_name: track_name, favourite: favourite, essentials: essentials)
+        hotlist = !!(row[TRACK_HOTLIST_COLUMN_INDEX] && row[TRACK_HOTLIST_COLUMN_INDEX].value)
+        artist.add_track(album_title: album_title, track_name: track_name, favourite: favourite, essentials: essentials, hotlist: hotlist)
         row_index += 1
         old_row = row.clone
         row = @tracks_worksheet[row_index]
