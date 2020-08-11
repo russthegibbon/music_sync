@@ -4,6 +4,8 @@ GEM
     mini_portile2 (2.4.0)
     nokogiri (1.10.4)
       mini_portile2 (~> 2.4.0)
+    nokogiri (1.10.4-x64-mingw32)
+      mini_portile2 (~> 2.4.0)
     rubyXL (3.3.31)
       nokogiri (>= 1.4.4)
       rubyzip (>= 1.1.6)
@@ -11,9 +13,10 @@ GEM
 
 PLATFORMS
   ruby
+  x64-mingw32
 
 DEPENDENCIES
   rubyXL
 
 BUNDLED WITH
-   1.16.1
+   1.17.2

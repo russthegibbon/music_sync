@@ -18,9 +18,10 @@ module Setup
 
   LIST_FILE_PREFIX = 'library'
   FILE_TYPES = "*.{mp3,wav,flac,alac,m4a,aac}"
-  SOURCE_PATH = '/tmp/sync/'
+  SOURCE_PATH = 'C:/Users/russe/Music/Library/'
   LIST_FILENAME = "#{LIST_FILE_PREFIX}_#{Time.now.strftime('%Y%m%d_%H%M%S')}.xlsx"
-  Dir.mkdir SOURCE_PATH if Dir[SOURCE_PATH] == []
+  # TODO: not sure why the following line was needed.
+  # Dir.mkdir SOURCE_PATH if Dir[SOURCE_PATH] == []
 
   ALBUMS_WORKSHEET_NAME = 'albums'
   TRACKS_WORKSHEET_NAME = 'tracks'
@@ -43,5 +44,5 @@ module Setup
   MAX_ROWS = 20000
   MARKER = 'X'
 
-  connect_to_server
+  # connect_to_server
 end
