@@ -68,16 +68,16 @@ class Library
 
   def check_column_headers
     ALBUM_COLUMN_HEADERS.each_with_index do |expected_header, column_index|
-      actual_header = @albums_worksheet[0][column_index].value
+      actual_header = @albums_worksheet[0][column_index]&.value
       unless actual_header == expected_header
-        raise "Column #{column_index} of albums worksheet should be #{expected_header} but is #{actual_header}."
+        raise "Column #{column_index} of albums worksheet should be '#{expected_header}' but is '#{actual_header}'."
       end
     end
 
     TRACK_COLUMN_HEADERS.each_with_index do |expected_header, column_index|
-      actual_header = @tracks_worksheet[0][column_index].value
+      actual_header = @tracks_worksheet[0][column_index]&.value
       unless actual_header == expected_header
-        raise "Column #{column_index} of tracks worksheet should be #{expected_header} but is #{actual_header}."
+        raise "Column #{column_index} of tracks worksheet should be '#{expected_header}' but is '#{actual_header}'."
       end
     end
   end
@@ -97,7 +97,8 @@ class Library
       begin
         title = row[album_column_index].value
         favourite = !!(row[ALBUM_FAVOURITE_COLUMN_INDEX] && row[ALBUM_FAVOURITE_COLUMN_INDEX].value)
-        album = Album.new(artist: artist, title: title, favourite: favourite)
+        continuity = !!(row[ALBUM_CONTINUITY_COLUMN_INDEX] && row[ALBUM_CONTINUITY_COLUMN_INDEX].value)
+        album = Album.new(artist: artist, title: title, favourite: favourite, continuity: continuity)
         artist.add_album album
         old_row = row.clone
         row_index += 1

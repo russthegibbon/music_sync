@@ -26,6 +26,9 @@ OptionParser.new do |parser|
   parser.on('-a', '--albums', "Sync marked albums.") do |sync_albums_arg|
     options[:albums] = sync_albums_arg
   end
+  parser.on('-c', '--continuity', "Sync continuity albums.") do |sync_continuity_arg|
+    options[:continuity] = sync_continuity_arg
+  end
   parser.on('-f', '--favourites', "Sync favourite tracks.") do |sync_favourites_arg|
     options[:favourites] = sync_favourites_arg
   end
@@ -47,12 +50,13 @@ end.parse!
 include Setup
 
 sync_albums = !!options[:albums]
+sync_continuity = !!options[:continuity]
 sync_favourites = !!options[:favourites]
 sync_essentials = !!options[:essentials]
 sync_hotlist = !!options[:hotlist]
 @preserve_files = !!options[:preserve_files]
 
-raise 'Nothing to sync: albums, favourites, hotlist or essentials must be specified.' unless sync_favourites || sync_essentials || sync_albums || sync_hotlist
+raise 'Nothing to sync: albums, continuity, favourites, hotlist or essentials must be specified.' unless sync_favourites || sync_essentials || sync_albums || sync_hotlist || sync_continuity
 
 TARGET_PATH = options[:target] || raise('Target path must be specified.')
 LIBRARY_PATH = options[:library] || raise('Library path must be specified')
@@ -134,9 +138,10 @@ artists_to_sync.each do |artist|
     files_to_sync = []
     album.tracks.each do |track|
       files_to_sync.push track.filename if (sync_albums && album.favourite) ||
-          (sync_favourites && track.favourite) ||
-          (sync_essentials && track.essentials)||
-          (sync_hotlist && track.hotlist)
+        (sync_continuity && album.continuity) ||
+        (sync_favourites && track.favourite) ||
+        (sync_essentials && track.essentials) ||
+        (sync_hotlist && track.hotlist)
     end
     source_directory = "#{SOURCE_PATH}#{artist.name[0].upcase}/#{artist.name}/#{album.title}/"
     target_directory = "#{TARGET_PATH}#{artist.name[0].upcase}/#{artist.name}/#{album.title}"
