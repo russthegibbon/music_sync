@@ -1,10 +1,11 @@
 class Album
-  attr_reader :artist, :title, :favourite, :tracks
+  attr_reader :artist, :title, :favourite, :continuity, :tracks
 
-  def initialize(artist:, title:, favourite:)
+  def initialize(artist:, title:, favourite:, continuity:)
     @artist = artist
     @title = title
     @favourite = favourite
+    @continuity = continuity
     @tracks = []
   end
 

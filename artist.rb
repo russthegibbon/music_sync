@@ -19,6 +19,10 @@ class Artist
     find_album_by_title(album_title).favourite
   end
 
+  def is_continuity_album?(album_title)
+    find_album_by_title(album_title).continuity
+  end
+
   def is_favourite_track?(album_title:, track_name:)
     if has_album_named? album_title
       album = find_album_by_title(album_title)

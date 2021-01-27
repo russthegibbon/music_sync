@@ -40,6 +40,7 @@ new_artists.each_with_index do |artist_path|
       artist = library.find_artist_by_name artist_name
       albums_worksheet.add_cell(albums_row, ALBUM_FAVOURITE_COLUMN_INDEX, MARKER) if artist.has_album_named?(album_title) && artist.is_favourite_album?(album_title)
       albums_worksheet.add_cell(albums_row, ALBUM_NEW_COLUMN_INDEX, MARKER) unless artist.has_album_named? album_title
+      albums_worksheet.add_cell(albums_row, ALBUM_CONTINUITY_COLUMN_INDEX, MARKER) if artist.has_album_named?(album_title) && artist.is_continuity_album?(album_title)
     else
       albums_worksheet.add_cell(albums_row, ALBUM_NEW_COLUMN_INDEX, MARKER)
     end
